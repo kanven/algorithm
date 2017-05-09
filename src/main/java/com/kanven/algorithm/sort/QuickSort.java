@@ -14,7 +14,7 @@ public class QuickSort {
 		int store = left;
 		for (int i = left; i < right; i++) {
 			int v = a[i];
-			if (v <= pv) {
+			if (v < pv) {
 				swap(a, i, store);
 				store++;
 			}
