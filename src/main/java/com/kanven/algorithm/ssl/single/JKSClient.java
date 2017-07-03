@@ -73,7 +73,7 @@ public class JKSClient extends AbstractSSLImpl {
 	}
 
 	public static void main(String[] args) throws Exception {
-		JKSClient client = new JKSClient( "123456", "ssl/ks.keystore");
+		JKSClient client = new JKSClient( "123456", "ssl/server.jks");
 		client.connection("localhost", 9090);
 		client.write("alert");
 		byte[] buf = client.read(1024);

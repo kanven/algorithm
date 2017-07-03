@@ -53,7 +53,7 @@ public class JKSServer extends AbstractSSLImpl {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		JKSServer server = new JKSServer("123456", "ssl/ks.keystore");
+		JKSServer server = new JKSServer("123456", "ssl/server.jks");
 		server.bind(9090);
 		Socket socket = server.server.accept();
 		InputStream input = socket.getInputStream();
