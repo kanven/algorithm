@@ -66,10 +66,4 @@ openssl pkcs12 -export -inkey $BASE_DIR/private/client.key.pem -in $BASE_DIR/cer
 echo =====客户端p12转换成jks ======
 keytool -importkeystore -srckeystore $BASE_DIR/certs/client.p12 -srcstoretype PKCS12 -destkeystore $BASE_DIR/certs/client.jks
 
-echo =====构建双向受信密钥======
-echo 客服端受信密钥
-keytool -import -alias www.kanven.com -file ./certs/server.cer  -keystore ./trust_client.keystore
-echo 构建服务端受信密钥
-keytool -import -alias www.kanven.com -file ./certs/client.cer  -keystore ./trust_sever.keystore
-
 
