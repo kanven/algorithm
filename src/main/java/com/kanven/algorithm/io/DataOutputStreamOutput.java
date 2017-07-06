@@ -30,4 +30,9 @@ public class DataOutputStreamOutput extends StreamOutput {
 		}
 	}
 
+	@Override
+	public void reset() throws IOException {
+		
+	}
+
 }

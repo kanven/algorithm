@@ -15,6 +15,14 @@ public abstract class StreamOutput extends OutputStream {
 
 	public abstract void writeBytes(byte[] b, int offset, int length) throws IOException;
 
+	public long position() {
+		throw new UnsupportedOperationException("position operation is unsupported.");
+	}
+
+	public void reset() throws IOException {
+		throw new UnsupportedOperationException("reset operation is unsupported.");
+	}
+
 	@Override
 	public void write(int b) throws IOException {
 		writeByte((byte) b);

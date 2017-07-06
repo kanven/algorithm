@@ -15,6 +15,8 @@ public abstract class StreamInput extends InputStream {
 
 	public abstract byte readByte() throws IOException;
 
+	public abstract void readBytes(byte[] b, int offset, int len) throws IOException;
+
 	public byte[] readByteArray() throws IOException {
 		int length = readVInt();
 		byte[] values = new byte[length];
