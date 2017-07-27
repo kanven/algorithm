@@ -69,7 +69,7 @@ public class BytesStreamOutput extends StreamOutput {
 
 	public byte[] getBytes() {
 		byte[] src = new byte[count];
-		System.arraycopy(src, 0, bytes, 0, count);
+		System.arraycopy(bytes, 0, src, 0, count);
 		return src;
 	}
 
