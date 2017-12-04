@@ -38,7 +38,7 @@ public class BytesStreamOutput extends StreamOutput {
 					"Illegal offset " + offset + "/length " + length + " for byte[] of length " + b.length);
 		}
 		ensureCapacity(count + length);
-		System.arraycopy(b, offset, bytes, count, count + length);
+		System.arraycopy(b, offset, bytes, count, length);
 		count += length;
 	}
 

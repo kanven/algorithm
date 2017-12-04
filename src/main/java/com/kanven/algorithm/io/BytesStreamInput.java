@@ -52,7 +52,7 @@ public class BytesStreamInput extends StreamInput {
 
 	@Override
 	public int read() throws IOException {
-		return pos > end ? buffer[pos++] & 0xFF : -1;
+		return pos < end ? buffer[pos++] & 0xFF : -1;
 	}
 
 	@Override
