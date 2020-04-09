@@ -101,7 +101,7 @@ public class BST<E extends Comparable<E>> {
 		if (node.left() == null && node.right() == null) {
 			Node<E> parent = node.parent();
 			node.remove();
-			afterRemove(parent);
+			afterRemove(parent, node, null);
 		} else if (node.left() != null && node.right() != null) {
 			// 2、度为2，即节点有左子树、右子树
 			Node<E> prede = predecessor(node);
@@ -122,7 +122,7 @@ public class BST<E extends Comparable<E>> {
 			node.value(prede.value());
 			// 释放前继节点
 			prede.remove();
-			afterRemove(parent);
+			afterRemove(parent, prede, null);
 		} else {
 			// 3、度为1，即节点只有左子树或右子树
 			Node<E> parent = node.parent();
@@ -139,7 +139,6 @@ public class BST<E extends Comparable<E>> {
 				child.parent(parent);
 			}
 			// 设置后续节点与父节点关系
-
 			// 删除的是根节点
 			if (parent == null) {
 				root = child;
@@ -153,13 +152,34 @@ public class BST<E extends Comparable<E>> {
 			}
 			// 删除节点
 			node.remove();
-			afterRemove(parent);
+			afterRemove(parent, node, child);
 		}
 		size--;
 	}
 
+	/**
+	 * 删除操作后续操作
+	 * 
+	 * @param node
+	 *            后续需要操作的节点
+	 */
 	protected void afterRemove(Node<E> node) {
 
+	}
+
+	/**
+	 * 删除操作后续操作
+	 * 
+	 * @param node
+	 *            后续需要操作的节点
+	 * @param deleted
+	 *            删除的节点
+	 * @param replace
+	 *            替换节点
+	 * 
+	 */
+	protected void afterRemove(Node<E> node, Node<E> deleted, Node<E> replace) {
+		afterRemove(node);
 	}
 
 	/**

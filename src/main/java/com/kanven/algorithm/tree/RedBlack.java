@@ -233,7 +233,7 @@ public class RedBlack<E extends Comparable<E>> extends BST<E> {
 	 * <ul>
 	 * </li>
 	 * <li>3.1.2、不能直接借 <br>
-	 * <b>兄弟节点为红色（红、黑）</b>，兄弟节点和父节点旋转变色，转换为3.1.1； </br>
+	 * <b>兄弟节点为红色（红、黑）</b>，向兄弟节点的孩子节点借即兄弟节点和父节点旋转变色，转换为3.1.1； </br>
 	 * </li>
 	 * </ul>
 	 * </li>
@@ -241,18 +241,101 @@ public class RedBlack<E extends Comparable<E>> extends BST<E> {
 	 * 
 	 */
 	@Override
-	protected void afterRemove(Node<E> node) {
-
+	protected void afterRemove(Node<E> node, Node<E> deleted, Node<E> replace) {
+		while (node != null) {
+			// 2.1
+			if (isRed(deleted)) {
+				return;
+			}
+			if (replace != null) {
+				// 2.2.2
+				black(replace);
+				return;
+			}
+			// 2.2.3
+			Node<E> sibling;
+			// 判断兄弟节点是否在左边
+			boolean isLeft;
+			if (node.left() != null) {
+				sibling = node.left();
+				isLeft = true;
+			} else {
+				sibling = node.right();
+				isLeft = false;
+			}
+			if (isRed(sibling)) {
+				// 3.1.2
+				black(sibling);
+				red(node);
+				if (isLeft) {
+					rotateRight(node);
+					// 更换兄弟
+					sibling = node.left();
+				} else {
+					rotateLeft(node);
+					// 更换兄弟
+					sibling = node.right();
+				}
+			}
+			// 3.1.1.2
+			if (isBlack(sibling.left()) && isBlack(sibling.right())) {
+				boolean isRed = isRed(node);
+				black(node);
+				red(sibling);
+				if (isRed) {
+					// 3.1.1.2.1
+					return;
+				}
+				// 3.1.1.2.2 出现下溢
+				deleted = node;
+				node = node.parent();
+				replace = null;
+				continue;
+			}
+			// 3.1.1.1
+			if (isLeft) {
+				if (isBlack(sibling.left())) {
+					// LR
+					sibling = rotateLeft(sibling);
+				}
+				// 染色
+				color(sibling, colorOf(node));
+				color(node, Color.BLACK);
+				color(sibling.left(), Color.BLACK);
+				// LL
+				rotateRight(node);
+			} else {
+				if (isBlack(sibling.right())) {
+					// RL
+					sibling = rotateRight(sibling);
+				}
+				// 染色
+				color(sibling, colorOf(node));
+				color(node, Color.BLACK);
+				color(sibling.right(), Color.BLACK);
+				// RR
+				rotateLeft(node);
+			}
+			return;
+		}
 	}
 
 	private void black(Node<E> node) {
-		RBNode<E> rb = (RBNode<E>) node;
-		rb.color = Color.BLACK;
+		color(node, Color.BLACK);
 	}
 
 	private void red(Node<E> node) {
+		color(node, Color.RED);
+	}
+
+	private void color(Node<E> node, Color color) {
 		RBNode<E> rb = (RBNode<E>) node;
-		rb.color = Color.RED;
+		rb.color = color;
+	}
+
+	private Color colorOf(Node<E> node) {
+		RBNode<E> rb = (RBNode<E>) node;
+		return rb.isRed() ? Color.RED : Color.BLACK;
 	}
 
 	private boolean isRed(Node<E> node) {
